@@ -1,8 +1,7 @@
 import { useState, PropsWithChildren, ReactNode } from "react";
-import { Menu, LayoutDashboard, Search, CircleUser } from "lucide-react";
+import { Menu, LayoutDashboard, CircleUser } from "lucide-react";
 import { Link } from "@inertiajs/react";
 import { User } from "@/types";
-import { Input } from "@/Components/ui/input";
 import { Button } from "@/Components/ui/button";
 import {
     DropdownMenu,
@@ -83,48 +82,42 @@ export default function Authenticated({
                     </SheetContent>
                 </Sheet>
                 <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-                    <form className="ml-auto flex-1 sm:flex-initial">
-                        <div className="relative">
-                            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                            <Input
-                                type="search"
-                                placeholder="Search..."
-                                className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-                            />
-                        </div>
-                    </form>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button
-                                variant="secondary"
-                                size="icon"
-                                className="rounded-full"
-                            >
-                                <CircleUser className="h-5 w-5" />
-                                <span className="sr-only">
-                                    Toggle user menu
-                                </span>
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>
-                                <Link href={route("profile.edit")}>
-                                    Profile
-                                </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <Link
-                                    href={route("logout")}
-                                    method="post"
-                                    as="button"
+                    <div className="ml-auto flex-1 sm:flex-initial">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    variant="secondary"
+                                    size="icon"
+                                    className="rounded-full"
                                 >
-                                    Log Out
-                                </Link>
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                                    <CircleUser className="h-5 w-5" />
+                                    <span className="sr-only">
+                                        Toggle user menu
+                                    </span>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>
+                                    {user.name}
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem>
+                                    <Link href={route("profile.edit")}>
+                                        Profile
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <Link
+                                        href={route("logout")}
+                                        method="post"
+                                        as="button"
+                                    >
+                                        Log Out
+                                    </Link>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
                 </div>
             </header>
 
@@ -138,7 +131,7 @@ export default function Authenticated({
 
             {/* <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8"> */}
             <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-                {children}
+                <div className="container mx-auto p-4">{children}</div>
             </main>
         </div>
     );
