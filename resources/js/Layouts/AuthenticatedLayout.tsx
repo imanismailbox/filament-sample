@@ -1,8 +1,4 @@
-import { useState, PropsWithChildren, ReactNode } from "react";
-import { Menu, LayoutDashboard, CircleUser } from "lucide-react";
-import { Link } from "@inertiajs/react";
-import { User } from "@/types";
-import { Button } from "@/Components/ui/button";
+import { CircleUser, LayoutDashboard, Menu } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -11,8 +7,14 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
+import { PropsWithChildren, ReactNode, useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/Components/ui/sheet";
+
+import { Button } from "@/Components/ui/button";
+import { Link } from "@inertiajs/react";
 import NavLink from "@/Components/NavLink";
+import { User } from "@/types";
+import { Toaster } from "@/Components/ui/sonner";
 
 export default function Authenticated({
     user,
@@ -45,6 +47,13 @@ export default function Authenticated({
                         active={route().current("profile.edit")}
                     >
                         profile
+                    </NavLink>
+
+                    <NavLink
+                        href={route("categories.index")}
+                        active={route().current("categories.index")}
+                    >
+                        Categories
                     </NavLink>
                     {/* Add more navigation links as needed */}
                 </nav>
@@ -133,6 +142,7 @@ export default function Authenticated({
             <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
                 <div className="container mx-auto p-4">{children}</div>
             </main>
+            <Toaster closeButton richColors />
         </div>
     );
 }
