@@ -143,7 +143,7 @@ export default function Index({
     };
 
     const submitBatchDelete = () => {
-        destroy(route("categories.batchDestroy"), {
+        destroy(route("categories.batch-destroy"), {
             data: { ids: selectedCategories },
             onSuccess: () => {
                 setSelectedCategories([]);
@@ -199,7 +199,7 @@ export default function Index({
                             <Button
                                 variant="destructive"
                                 disabled={selectedCategories.length === 0}
-                                onClick={() => setIsBatchDeleteDialogOpen}
+                                onClick={() => setIsBatchDeleteDialogOpen(true)}
                             >
                                 Delete Selected ({selectedCategories.length})
                             </Button>
@@ -211,66 +211,6 @@ export default function Index({
                             />
                         </div>
                     </div>
-                    <Dialog
-                        open={isCreateDialogOpen}
-                        onOpenChange={setIsCreateDialogOpen}
-                    >
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>Create New Category</DialogTitle>
-                            </DialogHeader>
-                            <form onSubmit={submitCreate}>
-                                <div className="mb-4">
-                                    <label htmlFor="name">Name</label>
-                                    <Input
-                                        id="name"
-                                        value={data.name}
-                                        onChange={(e) => {
-                                            const name = e.target.value;
-                                            setData({
-                                                ...data,
-                                                name: name,
-                                                slug: autoSlug
-                                                    ? generateSlug(name)
-                                                    : data.slug,
-                                            });
-                                        }}
-                                    />
-                                    {errors.name && (
-                                        <div className="text-red-500">
-                                            {errors.name}
-                                        </div>
-                                    )}
-                                </div>
-                                <div className="mb-4">
-                                    <label htmlFor="slug">Slug</label>
-                                    <div className="flex items-center space-x-2">
-                                        <Input
-                                            id="slug"
-                                            value={data.slug}
-                                            onChange={(e) =>
-                                                setData("slug", e.target.value)
-                                            }
-                                            disabled={autoSlug}
-                                        />
-                                        <Switch
-                                            checked={autoSlug}
-                                            onCheckedChange={setAutoSlug}
-                                        />
-                                        <span>Auto</span>
-                                    </div>
-                                    {errors.slug && (
-                                        <div className="text-red-500">
-                                            {errors.slug}
-                                        </div>
-                                    )}
-                                </div>
-                                <Button type="submit" disabled={processing}>
-                                    Create Category
-                                </Button>
-                            </form>
-                        </DialogContent>
-                    </Dialog>
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -441,6 +381,67 @@ export default function Index({
                 </CardContent>
             </Card>
 
+            <Dialog
+                open={isCreateDialogOpen}
+                onOpenChange={setIsCreateDialogOpen}
+            >
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Create New Category</DialogTitle>
+                    </DialogHeader>
+                    <form onSubmit={submitCreate}>
+                        <div className="mb-4">
+                            <label htmlFor="name">Name</label>
+                            <Input
+                                id="name"
+                                value={data.name}
+                                onChange={(e) => {
+                                    const name = e.target.value;
+                                    setData({
+                                        ...data,
+                                        name: name,
+                                        slug: autoSlug
+                                            ? generateSlug(name)
+                                            : data.slug,
+                                    });
+                                }}
+                            />
+                            {errors.name && (
+                                <div className="text-red-500">
+                                    {errors.name}
+                                </div>
+                            )}
+                        </div>
+                        <div className="mb-4">
+                            <label htmlFor="slug">Slug</label>
+                            <div className="flex items-center space-x-2">
+                                <Input
+                                    id="slug"
+                                    value={data.slug}
+                                    onChange={(e) =>
+                                        setData("slug", e.target.value)
+                                    }
+                                    disabled={autoSlug}
+                                />
+                                <Switch
+                                    checked={autoSlug}
+                                    onCheckedChange={setAutoSlug}
+                                />
+                                <span>Auto</span>
+                            </div>
+                            {errors.slug && (
+                                <div className="text-red-500">
+                                    {errors.slug}
+                                </div>
+                            )}
+                        </div>
+                        <Button type="submit" disabled={processing}>
+                            Create Category
+                        </Button>
+                    </form>
+                </DialogContent>
+            </Dialog>
+
             <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
                 <DialogContent>
                     <DialogHeader>
@@ -526,7 +527,10 @@ export default function Index({
                     <DialogHeader>
                         <DialogTitle>Delete Category</DialogTitle>
                     </DialogHeader>
-                    <p>Are you sure you want to delete this category?</p>
+                    <p>
+                        Are you sure you want to delete{" "}
+                        {selectedCategories.length} categories?
+                    </p>
                     <Button
                         onClick={submitBatchDelete}
                         variant="destructive"

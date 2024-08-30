@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Inertia\Inertia;
+use PhpParser\Node\Expr\Cast\Array_;
 
 class CategoryController extends Controller
 {
@@ -12,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Category/Index', [
+        return Inertia::render('Category/Page', [
             'categories' => \App\Models\Category::all(),
         ]);
     }
@@ -75,5 +77,11 @@ class CategoryController extends Controller
     {
         $category = \App\Models\Category::findOrFail($id);
         $category->delete();
+    }
+
+    public function batchDestroy(Request $request)
+    {
+        $ids = $request->input('ids');
+        \App\Models\Category::whereIn('id', $ids)->delete();
     }
 }
